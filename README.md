@@ -7,6 +7,8 @@ Online diary wich can store your notes
 
 `npm i`
 
+and
+
 `npm start`
 
 or
