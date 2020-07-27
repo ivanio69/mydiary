@@ -51,6 +51,12 @@ db.once("open", function () {
     });
   });
 
+  app.get("/api/v1/rmaccount", (req, res) => {
+    User.deleteOne({ email: req.body.email }, (err, resp) => {
+      res.send(resp);
+    });
+  });
+
   app.listen(3452, () => {
     console.log("Sevrer started!");
   });
