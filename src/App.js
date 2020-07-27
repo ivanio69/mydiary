@@ -34,38 +34,41 @@ class Home extends React.Component {
   render() {
     return (
       <div className="App">
-        {getCookie("ospa") ? null : (
-          <Alert theme="primary" id="a"
-          
-          style={{
-            position:'fixed',
-            top:0,
-            left:0,
-            width:'100vw',
-          }}>
-            It is open source project, so you can contribute on github: {""}
-            <a
-              href="https://github.com/lifecats/mydiary"
-              target="_blank"
-              style={{ color: "white", textDecoration: "underline" }}
-            >
-              lifecats/mydiary
-            </a>
-            <button
-              className="ts"
+        <div className="alert">
+          {getCookie("ospa") ? null : (
+            <Alert
+              theme="primary"
+              id="a"
               style={{
-                color: "white",
-                float: "right",
-                background: "transparent",
-                border: "none",
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
               }}
-              onClick={hide}
             >
-              nah
-            </button>{" "}
-          </Alert>
-        )}
-        
+              It is open source project, so you can contribute on github: {""}
+              <a
+                href="https://github.com/lifecats/mydiary"
+                target="_blank"
+                style={{ color: "white", textDecoration: "underline" }}
+              >
+                lifecats/mydiary
+              </a>
+              <button
+                className="ts"
+                style={{
+                  color: "white",
+                  float: "right",
+                  background: "transparent",
+                  border: "none",
+                }}
+                onClick={hide}
+              >
+                nah
+              </button>{" "}
+            </Alert>
+          )}
+        </div>  
       </div>
     );
   }
