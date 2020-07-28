@@ -26,6 +26,11 @@ db.once("open", function () {
     res.send("Welcome to Mydiary api!");
   });
 
+  //actual version
+  app.post("/api/ver", (req, res) => {
+  res.json({version:'0.1.0'})
+  });
+
   // V1
   //new account
   app.post("/api/v1/register", (req, res) => {
@@ -35,9 +40,13 @@ db.once("open", function () {
       pass: md5(req.body.pass),
       notes: [],
     });
-    user.save(function (err, callback) {
-      if (err) return console.error(err);
-      res.send(callback);
+    User.findOne({ email: req.body.email }, function (err, resp) {
+      if (resp === null) {
+        user.save(function (err, callback) {
+          if (err) return console.error(err);
+          res.send(callback);
+        });
+      } else res.json({message:'Email is alredy in use!'});
     });
   });
 
@@ -47,6 +56,9 @@ db.once("open", function () {
       err,
       resp
     ) {
+      if (resp === null) 
+      res.json({message:'Password or email is incorrect!'})
+      else
       res.send(resp);
     });
   });
