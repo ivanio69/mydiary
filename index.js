@@ -1,5 +1,5 @@
-// Schema
-
+//uuid
+const { v4: uuidv4 } = require("uuid");
 // Express
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -28,7 +28,7 @@ db.once("open", function () {
 
   //actual version
   app.post("/api/ver", (req, res) => {
-  res.json({version:'0.1.0'})
+    res.json({ version: "0.1.0" });
   });
 
   // V1
@@ -46,7 +46,7 @@ db.once("open", function () {
           if (err) return console.error(err);
           res.send(callback);
         });
-      } else res.json({message:'Email is alredy in use!'});
+      } else res.json({ message: "Email is alredy in use!" });
     });
   });
 
@@ -56,16 +56,42 @@ db.once("open", function () {
       err,
       resp
     ) {
-      if (resp === null) 
-      res.json({message:'Password or email is incorrect!'})
-      else
-      res.send(resp);
+      if (resp === null)
+        res.json({ message: "Password or email is incorrect!" });
+      else res.send(resp);
     });
   });
 
   app.get("/api/v1/rmaccount", (req, res) => {
     User.deleteOne({ email: req.body.email }, (err, resp) => {
       res.send(resp);
+    });
+  });
+
+  app.post("/api/v1/addpost", (req, res) => {
+    const id = uuidv4();
+    User.updateOne(
+      { email: req.body.email },
+      { $push: { notes: { text: req.body.text, id } } },
+      (err, resp) => {
+        res.send({ id: id, text: req.body.text });
+      }
+    );
+  });
+  app.post("/api/v1/rmpost", (req, res) => {
+    console.log(req.body.id);
+    User.updateOne(
+      { email: req.body.email },
+      { $pull: { notes: { id: req.body.id }} },
+      (err, resp) => {
+        res.send(resp);
+      }
+    );
+  });
+
+  app.get("/api/v1/notes", (req, res) => {
+    User.findOne({ email: req.body.email }, (err, u) => {
+      res.send(u.notes);
     });
   });
 
