@@ -79,7 +79,6 @@ db.once("open", function () {
     );
   });
   app.post("/api/v1/rmpost", (req, res) => {
-    console.log(req.body.id);
     User.updateOne(
       { email: req.body.email },
       { $pull: { notes: { id: req.body.id }} },
