@@ -1,6 +1,7 @@
 //uuid
 const { v4: uuidv4 } = require("uuid");
 // Express
+const path = require('path');
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -19,15 +20,13 @@ db.once("open", function () {
     pass: String,
     email: String,
     notes: Array,
+    emailUpdates: Boolean
   });
   const User = mongoose.model("User", schema);
-  //Home route
-  app.get("/", (req, res) => {
-    res.send("Welcome to Mydiary api!");
-  });
+
 
   //actual version
-  app.post("/api/ver", (req, res) => {
+  app.get("/api/ver", (req, res) => {
     res.json({ version: "0.1.0" });
   });
 
@@ -39,6 +38,7 @@ db.once("open", function () {
       email: req.body.email,
       pass: md5(req.body.pass),
       notes: [],
+      emailUpdates: req.body.emailupdates
     });
     User.findOne({ email: req.body.email }, function (err, resp) {
       if (resp === null) {
@@ -93,8 +93,13 @@ db.once("open", function () {
       res.send(u.notes);
     });
   });
+  app.use(express.static(path.join(__dirname, '/../web/build')));
 
-  app.listen(3452, () => {
+  app.get('*', (req,res) => {
+    res.sendFile(path.join(__dirname, '../web/build/index.html'));
+   });
+
+  app.listen(80, () => {
     console.log("Sevrer started!");
   });
 });
