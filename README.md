@@ -10,7 +10,7 @@ if you want to support project - fork repo :)
 
 then
 
-`node .` or `nodenom`
+`node .` or `nodenon`
 
 also 
 
