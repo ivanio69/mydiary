@@ -1,7 +1,7 @@
 //uuid
 const { v4: uuidv4 } = require("uuid");
 // Express
-const path = require('path');
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -20,10 +20,9 @@ db.once("open", function () {
     pass: String,
     email: String,
     notes: Array,
-    emailUpdates: Boolean
+    emailUpdates: Boolean,
   });
   const User = mongoose.model("User", schema);
-
 
   //actual version
   app.get("/api/ver", (req, res) => {
@@ -38,13 +37,13 @@ db.once("open", function () {
       email: req.body.email,
       pass: md5(req.body.pass),
       notes: [],
-      emailUpdates: req.body.emailUpdates
+      emailUpdates: req.body.emailUpdates,
     });
     User.findOne({ email: req.body.email }, function (err, resp) {
       if (resp === null) {
         user.save(function (err, data) {
           if (err) return console.error(err);
-          res.send({data, status:1, message:"Registered sucsessfully" });
+          res.send({ data, status: 1, message: "Registered sucsessfully" });
         });
       } else res.json({ message: "Email is alredy in use!" });
     });
@@ -58,7 +57,7 @@ db.once("open", function () {
     ) {
       if (data === null)
         res.json({ status: 0, message: "Password or email is incorrect!" });
-      else res.send({data, message:"Logged in!", status: 1});
+      else res.send({ data, message: "Logged in!", status: 1 });
     });
   });
 
@@ -70,34 +69,68 @@ db.once("open", function () {
 
   app.post("/api/v1/addpost", (req, res) => {
     const id = uuidv4();
+    let a = {};
+    a.snippet = "";
+    if (req.body.text.length < 50) {
+      a.snippet = req.body.text;
+    } else {
+      for (let i = 0; i < 50; i++) {
+        a.snippet += req.body.text.charAt(i);
+      }
+      a.snippet += "...";
+    }
     User.updateOne(
       { email: req.body.email },
-      { $push: { notes: { text: req.body.text, id } } },
+      {
+        $push: {
+          notes: {
+            name: req.body.name,
+            snippet: a.snippet,
+            text: req.body.text,
+            id,
+          },
+        },
+      },
       (err, resp) => {
-        res.send({ id: id, text: req.body.text });
+        res.send({
+          name: req.body.name,
+          snippet: a.snippet,
+          text: req.body.text,
+          id,
+          status: 1,
+          message:"Saved!"
+        });
       }
     );
   });
   app.post("/api/v1/rmpost", (req, res) => {
     User.updateOne(
       { email: req.body.email },
-      { $pull: { notes: { id: req.body.id }} },
+      { $pull: { notes: { id: req.body.id } } },
       (err, resp) => {
         res.send(resp);
       }
     );
   });
 
-  app.get("/api/v1/notes", (req, res) => {
+  app.post("/api/v1/notes", (req, res) => {
     User.findOne({ email: req.body.email }, (err, u) => {
       res.send(u.notes);
     });
   });
-  app.use(express.static(path.join(__dirname, '/../web/build')));
 
-  app.get('*', (req,res) => {
-    res.sendFile(path.join(__dirname, '../web/build/index.html'));
-   });
+  
+  app.post("/api/v1/getnote", (req, res) => {
+    User.findOne({ "notes.id": req.body.id }, (err, u) => {
+      res.send(u.notes[0]);
+    });
+  });
+
+  app.use(express.static(path.join(__dirname, "/../web/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../web/build/index.html"));
+  });
 
   app.listen(80, () => {
     console.log("Sevrer started!");
