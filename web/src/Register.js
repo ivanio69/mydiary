@@ -6,6 +6,8 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
+import "antd/dist/antd.css";
+import { message } from "antd";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -15,6 +17,12 @@ import Container from "@material-ui/core/Container";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -71,18 +79,29 @@ function SignUp() {
             const email = document.getElementById("email").value;
             const pass = document.getElementById("password").value;
             const emails = count;
+            const fullname = fName + " " + lName;
             fetch("/api/v1/register", {
               method: "POST",
-              headers: {'Content-Type': 'application/json'},
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                name: fName + " " + lName,
+                name: fullname,
                 pass: pass,
                 email: email,
                 emailUpdates: emails,
               }),
-            }).then((data) => {
-              console.log(data.json()); // JSON data parsed by `data.json()` call
-            });
+            }).then((response) =>
+              response.json().then((data) => {
+                const response = data;
+                if (response.status === 1) {
+                  message.success(response.message);
+                  setCookie('name',fullname, 30)
+                  setCookie('email',email, 30)
+                  window.location.href = "/account"
+                } else {
+                  message.error(response.message);
+                }
+              })
+            );
           }}
         >
           <Grid container spacing={2}>
@@ -101,7 +120,6 @@ function SignUp() {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                required
                 fullWidth
                 id="lastName"
                 label="Last Name"
@@ -158,8 +176,8 @@ function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
+              <Link href="/login" variant="body2">
+                Already have an account? Log in!
               </Link>
             </Grid>
           </Grid>

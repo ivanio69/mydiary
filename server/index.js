@@ -38,13 +38,13 @@ db.once("open", function () {
       email: req.body.email,
       pass: md5(req.body.pass),
       notes: [],
-      emailUpdates: req.body.emailupdates
+      emailUpdates: req.body.emailUpdates
     });
     User.findOne({ email: req.body.email }, function (err, resp) {
       if (resp === null) {
-        user.save(function (err, callback) {
+        user.save(function (err, data) {
           if (err) return console.error(err);
-          res.send(callback);
+          res.send({data, status:1, message:"Registered sucsessfully" });
         });
       } else res.json({ message: "Email is alredy in use!" });
     });
@@ -57,7 +57,7 @@ db.once("open", function () {
       resp
     ) {
       if (resp === null)
-        res.json({ message: "Password or email is incorrect!" });
+        res.json({ status: 0, message: "Password or email is incorrect!" });
       else res.send(resp);
     });
   });
