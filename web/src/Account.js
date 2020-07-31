@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -33,6 +34,12 @@ function getCookie(cname) {
   return "";
 }
 
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -154,19 +161,14 @@ export default function Album() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Modal
-        footer={null}
-        title="New note"
-        visible={newpost}
-       
-      >
+      <Modal footer={null} title="New note" visible={newpost}>
         <form
           className={classes.root}
           noValidate
           autoComplete="off"
           onSubmit={(e) => {
             e.preventDefault();
-            setNewpost(false)
+            setNewpost(false);
             const noteName = document.getElementById("noteName").value;
             const noteText = document.getElementById("noteText").value;
             fetch("/api/v1/addpost", {
@@ -201,16 +203,31 @@ export default function Album() {
             label="Write some goodies"
             multiline
           />
-          <Button type="submit"fullWidth variant="contained" color="primary">
+          <Button type="submit" fullWidth variant="contained" color="primary">
             Save it!
           </Button>
         </form>
       </Modal>
-      <AppBar position="relative">
+      <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
+          <Typography
+            variant="h6"
+            style={{ flexGrow: 1 }}
+            color="inherit"
+            noWrap
+          >
             Mydiary - <span className={classes.name}>{getCookie("name")} </span>
           </Typography>
+          <Button
+            onClick={() => {
+              setCookie("name", null, -10);
+              setCookie("email", null, -10);
+              window.location.href = "/";
+            }}
+            color="inherit"
+          >
+            <ExitToAppIcon />
+          </Button>
         </Toolbar>
       </AppBar>
       <main>

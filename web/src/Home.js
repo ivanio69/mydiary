@@ -1,22 +1,48 @@
 import React from "react";
-import "./App.css";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 function Home() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <Typography
+        variant="h3"
+        style={{
+          width: "90%",
+          textAlign: "center",
+          top: "20vh",
+          margin: "auto",
+          position: "relative",
+        }}
+      >
+        Mydiary - store your notes
+      </Typography>
+      <div
+        style={{
+          width: "90%",
+          textAlign: "center",
+          top: "25vh",
+          margin: "auto",
+          position: "relative",
+        }}
+      >
+        <Button
+          variant="contained"
+          onClick={() => (window.location.href = "/register")}
+          style={{ margin: 10 }}
+          color="primary"
         >
-          Learn React
-        </a>
-      </header>
+          Create account
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => (window.location.href = "/login")}
+          style={{ margin: 10 }}
+          color="primary"
+        >
+          Login
+        </Button>
+      </div>
     </div>
   );
 }
