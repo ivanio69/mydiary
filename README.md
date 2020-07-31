@@ -6,19 +6,17 @@ if you want to support project - fork repo :)
 
 ## Usage:
 
+`cd web && npm i && npm run build`
+`cd ..`
 `cd server && npm i`
 
 then
 
 `node .` or `nodenon`
 
-also 
+to develop on port 3000:
 
-`cd web && npm i`
-
-then 
-
-`npm start`
+`cd web && npm start`
 
 <span style="color:red">
 <b>Note</b> : for mydiary work on your local machine you need to have running instance of mongodb (comunity edition?) on default port of mongodb
