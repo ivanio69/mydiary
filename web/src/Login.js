@@ -5,6 +5,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import "antd/dist/antd.css";
+import { message } from "antd";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -12,7 +14,15 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
 
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -59,7 +69,35 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const pass = document.getElementById("password").value;
+            fetch("/api/v1/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                pass: pass,
+                email: email,
+              }),
+            }).then((response) =>
+              response.json().then((data) => {
+                const response = data;
+                if (response.status === 1) {
+                  message.success(response.message);
+                  setCookie("name", response.data.name, 30);
+                  setCookie("email", email, 30);
+                  window.location.href = "/account";
+                } else {
+                  message.error(response.message);
+                }
+              })
+            );
+          }}
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -96,9 +134,7 @@ export default function SignIn() {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              
-            </Grid>
+            <Grid item xs></Grid>
             <Grid item>
               <Link href="/register" variant="body2">
                 {"Don't have an account? Create new!"}
@@ -110,6 +146,17 @@ export default function SignIn() {
       <Box mt={8}>
         <Copyright />
       </Box>
+      {fetch ? null : (
+        <Dialog open={true} aria-labelledby="simple-dialog-title">
+          <DialogTitle id="simple-dialog-title">
+            {" "}
+            Plesae update uour browser!
+          </DialogTitle>
+          <div style={{ padding: "10px 25px 25px 25px" }}>
+            Fetch api is not supported!
+          </div>
+        </Dialog>
+      )}
     </Container>
   );
 }

@@ -94,9 +94,9 @@ function SignUp() {
                 const response = data;
                 if (response.status === 1) {
                   message.success(response.message);
-                  setCookie('name',fullname, 30)
-                  setCookie('email',email, 30)
-                  window.location.href = "/account"
+                  setCookie("name", fullname, 30);
+                  setCookie("email", email, 30);
+                  window.location.href = "/account";
                 } else {
                   message.error(response.message);
                 }

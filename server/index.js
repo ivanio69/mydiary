@@ -51,14 +51,14 @@ db.once("open", function () {
   });
 
   //login
-  app.get("/api/v1/login", (req, res) => {
+  app.post("/api/v1/login", (req, res) => {
     User.findOne({ email: req.body.email, pass: md5(req.body.pass) }, function (
       err,
-      resp
+      data
     ) {
-      if (resp === null)
+      if (data === null)
         res.json({ status: 0, message: "Password or email is incorrect!" });
-      else res.send(resp);
+      else res.send({data, message:"Logged in!", status: 1});
     });
   });
 
