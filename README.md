@@ -25,3 +25,7 @@ then
 </span>
 
 read more about developing and deploying react app [here](https://github.com/facebook/create-react-app)
+
+## Used 
+
+Used a lot of templates from [material-ui](https://material-ui.com/getting-started/templates/)
