@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Home";
-import { Result, Button } from "antd";
+import { Result } from "antd";
 import Post from "./Post";
 import Account from "./Account";
 import Register from "./Register";

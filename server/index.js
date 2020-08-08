@@ -122,7 +122,7 @@ db.once("open", function () {
   
   app.post("/api/v1/getnote", (req, res) => {
     User.findOne({ "notes.id": req.body.id }, (err, u) => {
-      res.send(u.notes[0]);
+      res.send(u.notes.find(x => x.id === req.body.id));
     });
   });
 
