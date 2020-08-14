@@ -38,7 +38,6 @@ db.once("open", function () {
   // V1
   //new account
   app.post("/api/v1/register", (req, res) => {
-    console.log("POST/register...");
     const user = new User({
       name: req.body.name,
       email: req.body.email,
@@ -66,7 +65,6 @@ db.once("open", function () {
 
   //login
   app.post("/api/v1/login", (req, res) => {
-    console.log("POST/login");
     try {
       User.findOne({ email: req.body.email, pass: md5(req.body.pass) }, function (
         err,
@@ -86,7 +84,6 @@ db.once("open", function () {
   });
 
   app.get("/api/v1/rmaccount", (req, res) => {
-    console.log("GET/rmaccount");
     try {
       User.deleteOne({ email: req.body.email }, (err, resp) => {
         res.send(resp);
@@ -101,7 +98,6 @@ db.once("open", function () {
   });
 
   app.post("/api/v1/addpost", (req, res) => {
-    console.log("POST/addpost", req.body);
     const id = uuidv4();
     let a = {};
     a.snippet = "";
@@ -158,7 +154,6 @@ db.once("open", function () {
     }
   });
   app.post("/api/v1/rmpost", (req, res) => {
-    console.log("POST/rmpost");
     try {
       User.updateOne(
         { email: req.body.email },
@@ -177,7 +172,6 @@ db.once("open", function () {
   });
 
   app.post("/api/v1/notes", (req, res) => {
-    console.log("POST/notes");
     try {
       User.findOne({ email: req.body.email }, (err, u) => {
         res.send(u.notes);
@@ -193,7 +187,6 @@ db.once("open", function () {
 
 
   app.post("/api/v1/getnote", (req, res) => {
-    console.log("POST/getnote");
     try {
       User.findOne({ "notes.id": req.body.id }, (err, u) => {
         res.send(u.notes.find(x => x.id === req.body.id));
