@@ -16,6 +16,7 @@ mongoose.connect("mongodb://localhost:27017/mydiary", {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
+  console.log("Connected to DB...");
   const schema = new mongoose.Schema({
     name: String,
     pass: String,
@@ -30,7 +31,9 @@ db.once("open", function () {
     res.json({ version: "0.1.0" });
   });
 
-app.use(morgan('combined'))
+  app.use(morgan('combined'));
+
+  app.use(express.static(path.join(__dirname, "/../web/build")));
 
   // V1
   //new account
@@ -42,45 +45,78 @@ app.use(morgan('combined'))
       notes: [],
       emailUpdates: req.body.emailUpdates,
     });
-    User.findOne({ email: req.body.email }, function (err, resp) {
-      if (resp === null) {
-        user.save(function (err, data) {
-          if (err) return console.error(err);
-          res.send({ data, status: 1, message: "Registered sucsessfully" });
-        });
-      } else res.json({ message: "Email is alredy in use!" });
-    });
+    try {
+      User.findOne({ email: req.body.email }, function (err, resp) {
+        if (err) { res.json({ message: err.message, err }); } else {
+          if (resp === null) {
+            user.save(function (err, data) {
+              if (err) return console.error(err);
+              res.send({ data, status: 1, message: "Registered sucsessfully" });
+            });
+          } else res.json({ message: "Email is alredy in use!" });
+        }
+      });
+    } catch (err) {
+      console.error("POST/register error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
 
   //login
   app.post("/api/v1/login", (req, res) => {
-    User.findOne({ email: req.body.email, pass: md5(req.body.pass) }, function (
-      err,
-      data
-    ) {
-      if (data === null)
-        res.json({ status: 0, message: "Password or email is incorrect!" });
-      else res.send({ data, message: "Logged in!", status: 1 });
-    });
+    try {
+      User.findOne({ email: req.body.email, pass: md5(req.body.pass) }, function (
+        err,
+        data
+      ) {
+        if (err) { res.json({ message: err.message, err }); } else {
+          if (data === null)
+            res.json({ status: 0, message: "Password or email is incorrect!" });
+          else res.send({ data, message: "Logged in!", status: 1 });
+        }
+      });
+    } catch (err) {
+      console.error("POST/login error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
 
   app.get("/api/v1/rmaccount", (req, res) => {
-    User.deleteOne({ email: req.body.email }, (err, resp) => {
-      res.send(resp);
-    });
+    try {
+      User.deleteOne({ email: req.body.email }, (err, resp) => {
+        if (err) { res.json({ message: err.message, err }); } else {
+          res.send(resp);
+        }
+      });
+    } catch (err) {
+      console.error("GET/rmaccount error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
 
   app.post("/api/v1/addpost", (req, res) => {
     const id = uuidv4();
     let a = {};
     a.snippet = "";
-    let s = req.body.text;
-    for(let i= 0; s.length; i++){
-    s = s.replace('#','')
-    s = s.replace('`','')
-    s = s.replace('*','')
-    s = s.replace('[','')
-    s = s.replace(']','')}
+
+    // the for loop was repeating forever since s kept getting reassigned.  String.replace() with the RegEx seems to work
+    const s = req.body.text.replace(/[#`*\[\]]/g, '');
+    /* for (let i = 0; s.length; i++) {
+      s = s.replace('#', '');
+      s = s.replace('`', '');
+      s = s.replace('*', '');
+      s = s.replace('[', '');
+      s = s.replace(']', '');
+    } */
     if (s.length < 50) {
       a.snippet = s;
     } else {
@@ -89,56 +125,94 @@ app.use(morgan('combined'))
       }
       a.snippet += "...";
     }
-    User.updateOne(
-      { email: req.body.email },
-      {
-        $push: {
-          notes: {
-            uname:req.body.uname,
-            name: req.body.name,
-            snippet: a.snippet,
-            text: req.body.text,
-            id,
+    try {
+      User.updateOne(
+        { email: req.body.email },
+        {
+          $push: {
+            notes: {
+              uname: req.body.uname,
+              name: req.body.name,
+              snippet: a.snippet,
+              text: req.body.text,
+              id,
+            },
           },
         },
-      },
-      (err, resp) => {
-        res.send({
-          uname:req.body.uname,
-          name: req.body.name,
-          snippet: a.snippet,
-          text: req.body.text,
-          id,
-          status: 1,
-          message:"Saved!"
-        });
-      }
-    );
+        (err, resp) => {
+          if (err) { res.json({ message: err.message, err }); } else {
+            res.send({
+              uname: req.body.uname,
+              name: req.body.name,
+              snippet: a.snippet,
+              text: req.body.text,
+              id,
+              status: 1,
+              message: "Saved!"
+            });
+          }
+        }
+      );
+    } catch (err) {
+      console.error("POST/addpost error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
   app.post("/api/v1/rmpost", (req, res) => {
-    User.updateOne(
-      { email: req.body.email },
-      { $pull: { notes: { id: req.body.id } } },
-      (err, resp) => {
-        res.send(resp);
-      }
-    );
+    try {
+      User.updateOne(
+        { email: req.body.email },
+        { $pull: { notes: { id: req.body.id } } },
+        (err, resp) => {
+          if (err) { res.json({ message: err.message, err }); } else {
+            res.send(resp);
+          }
+        }
+      );
+    } catch (err) {
+      console.error("POST/rmpost error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
 
   app.post("/api/v1/notes", (req, res) => {
-    User.findOne({ email: req.body.email }, (err, u) => {
-      res.send(u.notes);
-    });
+    try {
+      User.findOne({ email: req.body.email }, (err, u) => {
+        if (err) { res.json({ message: err.message, err }); } else {
+          res.send(u.notes);
+        }
+      });
+    } catch (err) {
+      console.error("POST/notes error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
 
-  
+
   app.post("/api/v1/getnote", (req, res) => {
-    User.findOne({ "notes.id": req.body.id }, (err, u) => {
-      res.send(u.notes.find(x => x.id === req.body.id));
-    });
+    try {
+      User.findOne({ "notes.id": req.body.id }, (err, u) => {
+        if (err) { res.json({ message: err.message, err }); } else {
+          res.send(u.notes.find(x => x.id === req.body.id));
+        }
+      });
+    } catch (err) {
+      console.error("POST/getnote error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
-
-  app.use(express.static(path.join(__dirname, "/../web/build")));
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../web/build/index.html"));
