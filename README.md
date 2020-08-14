@@ -2,25 +2,29 @@
 
 Just great web (or mobile) app to store and organise your todo's or just write up some notes.
 
-if you want to support project - fork repo :)
-
 ## Usage:
 
+first. build react app
+
 `cd web && npm i && npm run build`
+
 `cd ..`
+
+then install depend. for api
+
 `cd server && npm i`
 
 then
 
 `node .` or `nodenon`
 
-to develop on port 3000:
+that is all
+
+to develop react app on port 3000:
 
 `cd web && npm start`
 
-<span style="color:red">
 <b>Note</b> : for mydiary work on your local machine you need to have running instance of mongodb (comunity edition?) on default port of mongodb
-</span>
 
 read more about developing and deploying react app [here](https://github.com/facebook/create-react-app)
 

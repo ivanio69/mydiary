@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -25,8 +26,12 @@
     "md5": "^2.2.1",
     "mongo": "^0.1.0",
     "mongoose": "^5.9.25",
+    "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
