@@ -2,9 +2,6 @@
 
 Just great web (or mobile) app to store and organise your todo's or just write up some notes.
 
-### Api broke for development: somewhen connection reset. EVERYTHING OK FOR BUILD!!! idk why.
-
-
 ## Usage:
 
 first. build react app
