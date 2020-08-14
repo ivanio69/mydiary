@@ -47,12 +47,14 @@ db.once("open", function () {
     });
     try {
       User.findOne({ email: req.body.email }, function (err, resp) {
-        if (resp === null) {
-          user.save(function (err, data) {
-            if (err) return console.error(err);
-            res.send({ data, status: 1, message: "Registered sucsessfully" });
-          });
-        } else res.json({ message: "Email is alredy in use!" });
+        if (err) { res.json({ message: err.message, err }); } else {
+          if (resp === null) {
+            user.save(function (err, data) {
+              if (err) return console.error(err);
+              res.send({ data, status: 1, message: "Registered sucsessfully" });
+            });
+          } else res.json({ message: "Email is alredy in use!" });
+        }
       });
     } catch (err) {
       console.error("POST/register error: ", err);
@@ -70,9 +72,11 @@ db.once("open", function () {
         err,
         data
       ) {
-        if (data === null)
-          res.json({ status: 0, message: "Password or email is incorrect!" });
-        else res.send({ data, message: "Logged in!", status: 1 });
+        if (err) { res.json({ message: err.message, err }); } else {
+          if (data === null)
+            res.json({ status: 0, message: "Password or email is incorrect!" });
+          else res.send({ data, message: "Logged in!", status: 1 });
+        }
       });
     } catch (err) {
       console.error("POST/login error: ", err);
@@ -86,7 +90,9 @@ db.once("open", function () {
   app.get("/api/v1/rmaccount", (req, res) => {
     try {
       User.deleteOne({ email: req.body.email }, (err, resp) => {
-        res.send(resp);
+        if (err) { res.json({ message: err.message, err }); } else {
+          res.send(resp);
+        }
       });
     } catch (err) {
       console.error("GET/rmaccount error: ", err);
@@ -134,15 +140,17 @@ db.once("open", function () {
           },
         },
         (err, resp) => {
-          res.send({
-            uname: req.body.uname,
-            name: req.body.name,
-            snippet: a.snippet,
-            text: req.body.text,
-            id,
-            status: 1,
-            message: "Saved!"
-          });
+          if (err) { res.json({ message: err.message, err }); } else {
+            res.send({
+              uname: req.body.uname,
+              name: req.body.name,
+              snippet: a.snippet,
+              text: req.body.text,
+              id,
+              status: 1,
+              message: "Saved!"
+            });
+          }
         }
       );
     } catch (err) {
@@ -159,7 +167,9 @@ db.once("open", function () {
         { email: req.body.email },
         { $pull: { notes: { id: req.body.id } } },
         (err, resp) => {
-          res.send(resp);
+          if (err) { res.json({ message: err.message, err }); } else {
+            res.send(resp);
+          }
         }
       );
     } catch (err) {
@@ -174,7 +184,9 @@ db.once("open", function () {
   app.post("/api/v1/notes", (req, res) => {
     try {
       User.findOne({ email: req.body.email }, (err, u) => {
-        res.send(u.notes);
+        if (err) { res.json({ message: err.message, err }); } else {
+          res.send(u.notes);
+        }
       });
     } catch (err) {
       console.error("POST/notes error: ", err);
@@ -189,7 +201,9 @@ db.once("open", function () {
   app.post("/api/v1/getnote", (req, res) => {
     try {
       User.findOne({ "notes.id": req.body.id }, (err, u) => {
-        res.send(u.notes.find(x => x.id === req.body.id));
+        if (err) { res.json({ message: err.message, err }); } else {
+          res.send(u.notes.find(x => x.id === req.body.id));
+        }
       });
     } catch (err) {
       console.error("POST/getnote error: ", err);
