@@ -41,22 +41,6 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-const rmpost = (id) => {
-  fetch("/api/v1/rmpost", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: getCookie("email"),
-      id: id,
-    }),
-  }).then((response) =>
-    response.json().then((data) => {
-      if (data.length > 0) {
-        message.success("Removed post!");
-      }
-    })
-  );
-};
 
 function Copyright() {
   return (
@@ -144,33 +128,26 @@ function Cardz() {
             "notes"
           ).innerHTML += ReactDOMServer.renderToString(
             <Grid item key={card} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardContent
-                  style={{ color: "back" }}
-                  className={classes.cardContent}
-                >
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {card.name}
-                  </Typography>
-                  <Typography>{card.snippet}</Typography>
-                </CardContent>
+              <a href={"/post/" + card.id} style={{ color: "back" }}>
+                <Card className={classes.card}>
+                  <CardContent
+                    style={{ color: "back" }}
+                    className={classes.cardContent}
+                  >
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {card.name}
+                    </Typography>
+                    <Typography>{card.snippet}</Typography>
+                  </CardContent>
 
-                <CardActions>
-                  {" "}
-                  <a href={"/post/" + card.id} style={{ color: "back" }}>
+                  <CardActions>
+                    {" "}
                     <Button size="small" color="primary">
                       View
                     </Button>
-                  </a>
-                  <Button
-                    size="small"
-                    onClick={rmpost(card.id)}
-                    color="primary"
-                  >
-                    Remove
-                  </Button>
-                </CardActions>
-              </Card>
+                  </CardActions>
+                </Card>
+              </a>
             </Grid>
           ))
       );
