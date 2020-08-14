@@ -30,7 +30,9 @@ db.once("open", function () {
     res.json({ version: "0.1.0" });
   });
 
-app.use(morgan('combined'))
+  app.use(morgan('combined'));
+
+  app.use(express.static(path.join(__dirname, "/../web/build")));
 
   // V1
   //new account
@@ -75,12 +77,13 @@ app.use(morgan('combined'))
     let a = {};
     a.snippet = "";
     let s = req.body.text;
-    for(let i= 0; s.length; i++){
-    s = s.replace('#','')
-    s = s.replace('`','')
-    s = s.replace('*','')
-    s = s.replace('[','')
-    s = s.replace(']','')}
+    for (let i = 0; s.length; i++) {
+      s = s.replace('#', '');
+      s = s.replace('`', '');
+      s = s.replace('*', '');
+      s = s.replace('[', '');
+      s = s.replace(']', '');
+    }
     if (s.length < 50) {
       a.snippet = s;
     } else {
@@ -94,7 +97,7 @@ app.use(morgan('combined'))
       {
         $push: {
           notes: {
-            uname:req.body.uname,
+            uname: req.body.uname,
             name: req.body.name,
             snippet: a.snippet,
             text: req.body.text,
@@ -104,13 +107,13 @@ app.use(morgan('combined'))
       },
       (err, resp) => {
         res.send({
-          uname:req.body.uname,
+          uname: req.body.uname,
           name: req.body.name,
           snippet: a.snippet,
           text: req.body.text,
           id,
           status: 1,
-          message:"Saved!"
+          message: "Saved!"
         });
       }
     );
@@ -131,14 +134,12 @@ app.use(morgan('combined'))
     });
   });
 
-  
+
   app.post("/api/v1/getnote", (req, res) => {
     User.findOne({ "notes.id": req.body.id }, (err, u) => {
       res.send(u.notes.find(x => x.id === req.body.id));
     });
   });
-
-  app.use(express.static(path.join(__dirname, "/../web/build")));
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../web/build/index.html"));
