@@ -16,6 +16,7 @@ mongoose.connect("mongodb://localhost:27017/mydiary", {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function () {
+  console.log("Connected to DB...");
   const schema = new mongoose.Schema({
     name: String,
     pass: String,
@@ -44,22 +45,22 @@ db.once("open", function () {
       notes: [],
       emailUpdates: req.body.emailUpdates,
     });
-    User.findOne({ email: req.body.email }, function (err, resp) {
-      try {
+    try {
+      User.findOne({ email: req.body.email }, function (err, resp) {
         if (resp === null) {
           user.save(function (err, data) {
             if (err) return console.error(err);
             res.send({ data, status: 1, message: "Registered sucsessfully" });
           });
         } else res.json({ message: "Email is alredy in use!" });
-      } catch (err) {
-        console.error("POST/register error: ", err);
-        res.json({
-          message: err.message,
-          err
-        });
-      }
-    });
+      });
+    } catch (err) {
+      console.error("POST/register error: ", err);
+      res.json({
+        message: err.message,
+        err
+      });
+    }
   });
 
   //login
