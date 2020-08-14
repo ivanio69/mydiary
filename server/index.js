@@ -71,11 +71,14 @@ db.once("open", function () {
     const id = uuidv4();
     let a = {};
     a.snippet = "";
-    if (req.body.text.length < 50) {
-      a.snippet = req.body.text;
+    
+    let s = req.body.text;
+  
+    if (s.length < 50) {
+      a.snippet = s;
     } else {
       for (let i = 0; i < 50; i++) {
-        a.snippet += req.body.text.charAt(i);
+        a.snippet += s.charAt(i);
       }
       a.snippet += "...";
     }
@@ -84,6 +87,7 @@ db.once("open", function () {
       {
         $push: {
           notes: {
+            uname:req.body.uname,
             name: req.body.name,
             snippet: a.snippet,
             text: req.body.text,
@@ -93,6 +97,7 @@ db.once("open", function () {
       },
       (err, resp) => {
         res.send({
+          uname:req.body.uname,
           name: req.body.name,
           snippet: a.snippet,
           text: req.body.text,
@@ -115,6 +120,9 @@ db.once("open", function () {
 
   app.post("/api/v1/notes", (req, res) => {
     User.findOne({ email: req.body.email }, (err, u) => {
+      if(u === null){
+        res.sendStatus(404)
+      }
       res.send(u.notes);
     });
   });
@@ -132,7 +140,7 @@ db.once("open", function () {
     res.sendFile(path.join(__dirname, "../web/build/index.html"));
   });
 
-  app.listen(80, () => {
+  app.listen(8081, () => {
     console.log("Sevrer started!");
   });
 });

@@ -176,6 +176,7 @@ export default function Album() {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 name: noteName,
+                uname: getCookie("name"),
                 text: noteText,
                 email: getCookie("email"),
               }),
