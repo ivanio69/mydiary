@@ -2,7 +2,7 @@
 
 Just great web (or mobile) app to store and organise your todo's or just write up some notes.
 
-### Here broke some proxy for me
+### Api broke: somewhen returns CONNECTION RESET
 
 
 ## Usage:
