@@ -2,6 +2,7 @@
 
 Just great web (or mobile) app to store and organise your todo's or just write up some notes.
 
+### NOT PRODUCTION CODE: because i dont want to production.
 
 ## Usage:
 
