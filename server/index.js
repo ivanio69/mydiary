@@ -2,6 +2,7 @@
 const { v4: uuidv4 } = require("uuid");
 // Express
 const path = require("path");
+const morgan = require("morgan");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -28,6 +29,8 @@ db.once("open", function () {
   app.get("/api/ver", (req, res) => {
     res.json({ version: "0.1.0" });
   });
+
+app.use(morgan('combined'))
 
   // V1
   //new account
@@ -71,11 +74,18 @@ db.once("open", function () {
     const id = uuidv4();
     let a = {};
     a.snippet = "";
-    if (req.body.text.length < 50) {
-      a.snippet = req.body.text;
+    let s = req.body.text;
+    for(let i= 0; s.length; i++){
+    s = s.replace('#','')
+    s = s.replace('`','')
+    s = s.replace('*','')
+    s = s.replace('[','')
+    s = s.replace(']','')}
+    if (s.length < 50) {
+      a.snippet = s;
     } else {
       for (let i = 0; i < 50; i++) {
-        a.snippet += req.body.text.charAt(i);
+        a.snippet += s.charAt(i);
       }
       a.snippet += "...";
     }
@@ -84,6 +94,7 @@ db.once("open", function () {
       {
         $push: {
           notes: {
+            uname:req.body.uname,
             name: req.body.name,
             snippet: a.snippet,
             text: req.body.text,
@@ -93,6 +104,7 @@ db.once("open", function () {
       },
       (err, resp) => {
         res.send({
+          uname:req.body.uname,
           name: req.body.name,
           snippet: a.snippet,
           text: req.body.text,
@@ -132,7 +144,7 @@ db.once("open", function () {
     res.sendFile(path.join(__dirname, "../web/build/index.html"));
   });
 
-  app.listen(80, () => {
+  app.listen(8081, () => {
     console.log("Sevrer started!");
   });
 });
