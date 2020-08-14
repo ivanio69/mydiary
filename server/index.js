@@ -101,18 +101,20 @@ db.once("open", function () {
   });
 
   app.post("/api/v1/addpost", (req, res) => {
-    console.log("POST/addpost");
+    console.log("POST/addpost", req.body);
     const id = uuidv4();
     let a = {};
     a.snippet = "";
-    let s = req.body.text;
-    for (let i = 0; s.length; i++) {
+
+    // the for loop was repeating forever since s kept getting reassigned.  String.replace() with the RegEx seems to work
+    const s = req.body.text.replace(/[#`*\[\]]/g, '');
+    /* for (let i = 0; s.length; i++) {
       s = s.replace('#', '');
       s = s.replace('`', '');
       s = s.replace('*', '');
       s = s.replace('[', '');
       s = s.replace(']', '');
-    }
+    } */
     if (s.length < 50) {
       a.snippet = s;
     } else {
