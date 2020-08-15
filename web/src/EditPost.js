@@ -94,7 +94,7 @@ export default function EditPost() {
                 const response = data;
                 if ((response.ok = 1)) {
                   message.success("Edited");
-                  window.location.href = "/post/"+id;
+                  window.location.href = "/post/" + id;
                 } else {
                   message.error("Something went wrong...");
                 }
@@ -142,7 +142,7 @@ export default function EditPost() {
                 const response = data;
                 if ((response.ok = 1)) {
                   message.success("Removed");
-                  window.location.href = "/account";
+                  window.location.href = "/";
                 } else {
                   message.error("Something went wrong...");
                 }

@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 function Home() {
   return (
     <div>
+      <div className="gradient">
       <Typography
         variant="h3"
         style={{
@@ -13,6 +14,7 @@ function Home() {
           top: "20vh",
           margin: "auto",
           position: "relative",
+          color:"#ffffff  "
         }}
       >
         Mydiary - store your notes
@@ -37,11 +39,12 @@ function Home() {
         <Button
           variant="outlined"
           onClick={() => (window.location.href = "/login")}
-          style={{ margin: 10 }}
+          style={{ margin: 10, color:'#ffffff' ,borderColor:"#ffffff"}}
           color="primary"
         >
           Login
         </Button>
+      </div>
       </div>
     </div>
   );

@@ -36,23 +36,19 @@ ReactDOM.render(
       <Route exact path="/login">
         <Login />
       </Route>
-      <Route exact path="/">
-        <Home />
-      </Route>
+
       <Route exact path="/post/:id" children={<Post />} />
       <Route exact path="/post/:id/edit" children={<EditPost />} />
       {getCookie("email").length > 0 ? (
         <>
-          <Route exact path="/account">
+          <Route exact path="/">
             <Account />
           </Route>
         </>
       ) : (
-        <Result
-          status="403"
-          title="403"
-          subTitle="Sorry, you are not authorized to access this page."
-        />
+        <Route exact path="/">
+          <Home />
+        </Route>
       )}
       <Route exact path="*">
         <Result

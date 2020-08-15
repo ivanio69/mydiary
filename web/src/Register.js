@@ -96,7 +96,7 @@ function SignUp() {
                   message.success(response.message);
                   setCookie("name", fullname, 30);
                   setCookie("email", email, 30);
-                  window.location.href = "/account";
+                  window.location.href = "/";
                 } else {
                   message.error(response.message);
                 }
