@@ -8,22 +8,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useParams } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
-import "./post.css";
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(";");
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
+import "./css/post.css";
+import getCookie from "./functions/getCookie";
 
 export default function Post() {
   let { id } = useParams();
@@ -47,36 +33,19 @@ export default function Post() {
     } else {
       response.json().then((data) => {
         if (getCookie("email") === data.email) {
-          /*  let r = {}
-            r.rempost = (id) => {
-              fetch("/api/v1/rmpost", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  email: getCookie("email"),
-                  id: id,
-                }),
-              }).then((response) =>
-                response.json().then((data) => {
-                  if (data.length > 0) {
-                    message.success("Removed post!");
-                    window.location.href = "/account";
-                  }
-                })
-              );
-            };
-         */
           document.getElementById(
             "fab"
           ).innerHTML = ReactDOMServer.renderToString(
-          <a href={"/post/"+id+"/edit"}>  <Fab
-              color="primary"
-              aria-label="edit"
-        
-              style={{ position: "fixed", bottom: 20, right: 20 }}
-            >
-              <EditIcon />
-            </Fab></a>
+            <a href={"/post/" + id + "/edit"}>
+              {" "}
+              <Fab
+                color="primary"
+                aria-label="edit"
+                style={{ position: "fixed", bottom: 20, right: 20 }}
+              >
+                <EditIcon />
+              </Fab>
+            </a>
           );
         }
         document.getElementById("name").innerHTML = data.name;
