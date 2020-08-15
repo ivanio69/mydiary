@@ -215,6 +215,7 @@ export default function Album() {
             label="Write some goodies"
             multiline
           />
+          <p>Markdown supported.</p>
           <Button type="submit" fullWidth variant="contained" color="primary">
             Save it!
           </Button>
