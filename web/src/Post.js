@@ -2,13 +2,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Fab from "@material-ui/core/Fab";
-import { message, Result } from "antd";
+import { Result } from "antd";
 import React from "react";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditIcon from "@material-ui/icons/Edit";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useParams } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
-import './post.css'
+import "./post.css";
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -27,7 +27,6 @@ function getCookie(cname) {
 
 export default function Post() {
   let { id } = useParams();
-
   fetch("/api/v1/getnote", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -48,7 +47,7 @@ export default function Post() {
     } else {
       response.json().then((data) => {
         if (getCookie("email") === data.email) {
-          let r = {}
+          /*  let r = {}
             r.rempost = (id) => {
               fetch("/api/v1/rmpost", {
                 method: "POST",
@@ -66,20 +65,18 @@ export default function Post() {
                 })
               );
             };
-          
+         */
           document.getElementById(
             "fab"
           ).innerHTML = ReactDOMServer.renderToString(
-            <Fab
-              color="secondary"
-              aria-label="add"
-              onClick={(e) => {
-                r.rempost(id);
-              }}
+          <a href={"/post/"+id+"/edit"}>  <Fab
+              color="primary"
+              aria-label="edit"
+        
               style={{ position: "fixed", bottom: 20, right: 20 }}
             >
-              <DeleteForeverIcon />
-            </Fab>
+              <EditIcon />
+            </Fab></a>
           );
         }
         document.getElementById("name").innerHTML = data.name;

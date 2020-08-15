@@ -174,6 +174,34 @@ db.once("open", function () {
       });
     }
   });
+
+  app.post("/api/v1/editpost", (req, res) => {
+    try {
+      User.update(
+        { "notes.id": req.body.id },
+        {
+          $set: {
+            "notes.$.name": req.body.name,
+            "notes.$.text": req.body.text,
+          },
+        },
+        (err, resp) => {
+          if (err) {
+            res.json({ message: err.message, err });
+          } else {
+            res.send(resp);
+          }
+        }
+      );
+    } catch (err) {
+      console.error("POST/editpost error: ", err);
+      res.json({
+        message: err.message,
+        err,
+      });
+    }
+  });
+
   app.post("/api/v1/rmpost", (req, res) => {
     try {
       User.updateOne(
@@ -222,8 +250,7 @@ db.once("open", function () {
         } else {
           if (u == null) {
             res.sendStatus(404);
-          }else
-          res.send(u.notes.find((x) => x.id === req.body.id));
+          } else res.send(u.notes.find((x) => x.id === req.body.id));
         }
       });
     } catch (err) {

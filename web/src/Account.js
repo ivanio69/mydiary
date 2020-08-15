@@ -41,7 +41,6 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -168,7 +167,12 @@ export default function Album() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Modal footer={null} title="New note" visible={newpost}>
+      <Modal
+        footer={null}
+        title="New note"
+        onCancel={() => setNewpost(false)}
+        visible={newpost}
+      >
         <form
           className={classes.root}
           noValidate

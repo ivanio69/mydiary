@@ -7,6 +7,7 @@ import { Result } from "antd";
 import Post from "./Post";
 import Account from "./Account";
 import Register from "./Register";
+import EditPost from "./EditPost";
 import Login from "./Login";
 import * as serviceWorker from "./serviceWorker";
 
@@ -39,6 +40,7 @@ ReactDOM.render(
         <Home />
       </Route>
       <Route exact path="/post/:id" children={<Post />} />
+      <Route exact path="/post/:id/edit" children={<EditPost />} />
       {getCookie("email").length > 0 ? (
         <>
           <Route exact path="/account">
