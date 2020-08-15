@@ -8,7 +8,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { useParams } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
-
+import './post.css'
 function getCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
