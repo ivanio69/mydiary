@@ -84,6 +84,7 @@ export default function SignIn() {
                 if (response.status === 1) {
                   message.success(response.message);
                   setCookie("name", response.data.name, 30);
+                  setCookie("id", response.data._id, 30);
                   setCookie("email", email, 30);
                   window.location.href = "/";
                 } else {

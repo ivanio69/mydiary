@@ -1,8 +1,9 @@
 import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Fab from "@material-ui/core/Fab";
-import { Result } from "antd";
+import { Result, Modal } from "antd";
 import React from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +14,8 @@ import getCookie from "./functions/getCookie";
 
 export default function Post() {
   let { id } = useParams();
+  const [share, setShare] = React.useState(false);
+
   fetch("/api/v1/getnote", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -49,7 +52,8 @@ export default function Post() {
           );
         }
         document.getElementById("name").innerHTML = data.name;
-        document.getElementById("username").innerHTML = "By " + data.uname;
+        document.getElementById("username").innerHTML =
+          'By  <a href="/user/' + data.user_id + '">' + data.uname + "</a>";
         var md0 = require("md0");
         var markdown = data.text;
         var option = {
@@ -65,6 +69,16 @@ export default function Post() {
 
   return (
     <div>
+      <Modal
+        footer={null}
+        title="Share account"
+        onCancel={() => setShare(false)}
+        visible={share}
+      >
+        Share this link to your account:
+        <br />
+        {window.location.href}{" "}
+      </Modal>
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
@@ -75,7 +89,14 @@ export default function Post() {
       <CssBaseline />
       <div style={{ margin: "25px" }}>
         <div id="error">
+          <span style={{ float: "right" }}>
+            {" "}
+            <Button color="primary" onClick={() => setShare(true)}>
+              Share
+            </Button>
+          </span>
           <Typography variant="h4" id="name" />
+
           <span style={{ opacity: "60%" }} id="username" />
           <Typography
             variant="body1"

@@ -94,7 +94,29 @@ db.once("open", function () {
     }
   });
 
-  app.get("/api/v1/rmaccount", (req, res) => {
+  //get user data
+  app.post("/api/v1/userdata", (req, res) => {
+    try {
+      User.findOne(
+        { _id: req.body.id },
+        function (err, data) {
+          if (err) {
+            res.json({ message: err.message, err });
+          } else {
+            res.json(data);
+          }
+        }
+      );
+    } catch (err) {
+      console.error("POST/login error: ", err);
+      res.json({
+        message: err.message,
+        err,
+      });
+    }
+  });
+
+  app.post("/api/v1/rmaccount", (req, res) => {
     try {
       User.deleteOne({ email: req.body.email }, (err, resp) => {
         if (err) {
@@ -135,6 +157,7 @@ db.once("open", function () {
           $push: {
             notes: {
               email: req.body.email,
+              user_id: req.body.user_id,
               uname: req.body.uname,
               name: req.body.name,
               snippet: a.snippet,
@@ -148,6 +171,7 @@ db.once("open", function () {
             res.json({ message: err.message, err });
           } else {
             res.send({
+              user_id: req.body.user_id,
               email: req.body.email,
               uname: req.body.uname,
               name: req.body.name,

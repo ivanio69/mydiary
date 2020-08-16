@@ -1,14 +1,11 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
 import AppBar from "@material-ui/core/AppBar";
-import { Modal, message } from "antd";
+import { Modal, Result } from "antd";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import { useParams } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,7 +15,6 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import ReactDOMServer from "react-dom/server";
 import getCookie from "./functions/getCookie";
-import setCookie from "./functions/setCookie";
 
 function Copyright() {
   return (
@@ -88,20 +84,26 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Cardz() {
+  let { id } = useParams();
   const classes = useStyles();
-  fetch("/api/v1/notes", {
+  fetch("/api/v1/userdata", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: getCookie("email"),
+      id: id,
     }),
   }).then((response) =>
     response.json().then((data) => {
-      if (data.length > 0) {
+        if(data === null){document.getElementById('root').innerHTML = ReactDOMServer.renderToString( <Result
+            status="404"
+            title="404"
+            subTitle="Sorry, user you visited does not exist."
+          />)}else{
+      if (data.notes.length > 0) {
         document.getElementById("notes").innerHTML = null;
       }
-      let display_notes = data.reverse();
-
+      document.getElementById("name").innerHTML = data.name;
+      let display_notes = data.notes.reverse();
       display_notes.map(
         (card) =>
           (document.getElementById(
@@ -131,7 +133,7 @@ function Cardz() {
             </Grid>
           ))
       );
-    })
+}})
   );
   return (
     <h1 style={{ margin: "auto" }}>
@@ -143,75 +145,20 @@ function Cardz() {
 export default function Album() {
   const classes = useStyles();
 
-  const [newpost, setNewpost] = React.useState(false);
   const [share, setShare] = React.useState(false);
   return (
     <React.Fragment>
       <CssBaseline />
-      <Modal
-        footer={null}
-        title="New note"
-        onCancel={() => setNewpost(false)}
-        visible={newpost}
-      >
-        <form
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setNewpost(false);
-            const noteName = document.getElementById("noteName").value;
-            const noteText = document.getElementById("noteText").value;
-            fetch("/api/v1/addpost", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                name: noteName,
-                uname: getCookie("name"),
-                user_id: getCookie("id"),
-                text: noteText,
-                email: getCookie("email"),
-              }),
-            }).then((response) =>
-              response.json().then((data) => {
-                const response = data;
-                if (response.status === 1) {
-                  message.success(response.message);
-                } else {
-                  message.error(response.message);
-                }
-              })
-            );
-          }}
-        >
-          <TextField
-            id="noteName"
-            className={classes.newpostname}
-            label="Name of your art"
-          />
-          <TextField
-            className={classes.newposttext}
-            id="noteText"
-            rows={4}
-            label="Write some goodies"
-            multiline
-          />
-          <p>Markdown supported.</p>
-          <Button type="submit" fullWidth variant="contained" color="primary">
-            Save it!
-          </Button>
-        </form>
-      </Modal>
+
       <Modal
         footer={null}
         title="Share account"
         onCancel={() => setShare(false)}
         visible={share}
       >
-        Share this link to your account:
+        Share this link to this account:
         <br />
-        https://mydiary.ga/user/{getCookie("id")}{" "}
+        {window.location.href}
       </Modal>
       <AppBar position="static">
         <Toolbar>
@@ -223,16 +170,6 @@ export default function Album() {
           >
             Mydiary - <span className={classes.name}>{getCookie("name")} </span>
           </Typography>
-          <Button
-            onClick={() => {
-              setCookie("name", null, -10);
-              setCookie("email", null, -10);
-              window.location.href = "/";
-            }}
-            color="inherit"
-          >
-            <ExitToAppIcon />
-          </Button>
         </Toolbar>
       </AppBar>
       <main>
@@ -244,28 +181,14 @@ export default function Album() {
               align="center"
               color="textPrimary"
               gutterBottom
+              id="name"
             >
-              {getCookie("name")}{" "}
+              ...
             </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              color="textSecondary"
-              paragraph
-            >
-              Welcome back!{" "}
-            </Typography>
+
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    onClick={() => setNewpost(true)}
-                    color="primary"
-                  >
-                    New note
-                  </Button>
-                </Grid>
+                <Grid item></Grid>
                 <Button color="primary" onClick={() => setShare(true)}>
                   Share
                 </Button>
@@ -279,14 +202,7 @@ export default function Album() {
           </Grid>
         </Container>
       </main>
-      <Fab
-        color="primary"
-        aria-label="add"
-        onClick={() => setNewpost(true)}
-        className={classes.button}
-      >
-        <AddIcon />
-      </Fab>
+
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Mydiary

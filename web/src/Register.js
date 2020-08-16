@@ -16,8 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
-import setCookie from './functions/setCookie'
-
+import setCookie from "./functions/setCookie";
 
 function Copyright() {
   return (
@@ -92,6 +91,7 @@ function SignUp() {
                   message.success(response.message);
                   setCookie("name", fullname, 30);
                   setCookie("email", email, 30);
+                  setCookie("id", response.data._id, 30);
                   window.location.href = "/";
                 } else {
                   message.error(response.message);
