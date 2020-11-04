@@ -1,8 +1,8 @@
-//uuid
+// Mydiary API V1
+// Creative Commons License  at ./LICENSE.md
+
 const { v4: uuidv4 } = require("uuid");
-// Express
 const path = require("path");
-const morgan = require("morgan");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -22,6 +22,7 @@ db.once("open", function () {
     pass: String,
     email: String,
     notes: Array,
+    registered: String,
     emailUpdates: Boolean,
   });
   const User = mongoose.model("User", schema);
@@ -31,18 +32,24 @@ db.once("open", function () {
     res.json({ version: "0.1.0" });
   });
 
-  app.use(morgan("combined"));
-
   app.use(express.static(path.join(__dirname, "/../web/build")));
 
   // V1
   //new account
   app.post("/api/v1/register", (req, res) => {
+    var today = new Date();
+    var date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
     const user = new User({
       name: req.body.name,
       email: req.body.email,
       pass: md5(req.body.pass),
       notes: [],
+      registered: date,
       emailUpdates: req.body.emailUpdates,
     });
     try {
@@ -97,16 +104,13 @@ db.once("open", function () {
   //get user data
   app.post("/api/v1/userdata", (req, res) => {
     try {
-      User.findOne(
-        { _id: req.body.id },
-        function (err, data) {
-          if (err) {
-            res.json({ message: err.message, err });
-          } else {
-            res.json(data);
-          }
+      User.findOne({ _id: req.body.id }, function (err, data) {
+        if (err) {
+          res.json({ message: err.message, err });
+        } else {
+          res.json(data);
         }
-      );
+      });
     } catch (err) {
       console.error("POST/login error: ", err);
       res.json({

@@ -211,7 +211,7 @@ export default function Album() {
       >
         Share this link to your account:
         <br />
-        https://mydiary.ga/user/{getCookie("id")}{" "}
+        https://mydiary.ga/user/{getCookie("id")}
       </Modal>
       <AppBar position="static">
         <Toolbar>

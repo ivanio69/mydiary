@@ -94,46 +94,55 @@ function Cardz() {
     }),
   }).then((response) =>
     response.json().then((data) => {
-        if(data === null){document.getElementById('root').innerHTML = ReactDOMServer.renderToString( <Result
+      if (data === null) {
+        document.getElementById(
+          "root"
+        ).innerHTML = ReactDOMServer.renderToString(
+          <Result
             status="404"
             title="404"
             subTitle="Sorry, user you visited does not exist."
-          />)}else{
-      if (data.notes.length > 0) {
-        document.getElementById("notes").innerHTML = null;
-      }
-      document.getElementById("name").innerHTML = data.name;
-      let display_notes = data.notes.reverse();
-      display_notes.map(
-        (card) =>
-          (document.getElementById(
-            "notes"
-          ).innerHTML += ReactDOMServer.renderToString(
-            <Grid item key={card} xs={12} sm={6} md={4}>
-              <a href={"/post/" + card.id} style={{ color: "back" }}>
-                <Card className={classes.card}>
-                  <CardContent
-                    style={{ color: "back" }}
-                    className={classes.cardContent}
-                  >
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {card.name}
-                    </Typography>
-                    <Typography>{card.snippet}</Typography>
-                  </CardContent>
+          />
+        );
+      } else {
+        if (data.notes.length > 0) {
+          document.getElementById("notes").innerHTML = null;
+        }
+        document.getElementById("name").innerHTML = data.name;
+        document.getElementById("reg_date").innerHTML =
+          "Joined on " + data.registered;
+        let display_notes = data.notes.reverse();
+        display_notes.map(
+          (card) =>
+            (document.getElementById(
+              "notes"
+            ).innerHTML += ReactDOMServer.renderToString(
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <a href={"/post/" + card.id} style={{ color: "back" }}>
+                  <Card className={classes.card}>
+                    <CardContent
+                      style={{ color: "back" }}
+                      className={classes.cardContent}
+                    >
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {card.name}
+                      </Typography>
+                      <Typography>{card.snippet}</Typography>
+                    </CardContent>
 
-                  <CardActions>
-                    {" "}
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                  </CardActions>
-                </Card>
-              </a>
-            </Grid>
-          ))
-      );
-}})
+                    <CardActions>
+                      {" "}
+                      <Button size="small" color="primary">
+                        View
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </a>
+              </Grid>
+            ))
+        );
+      }
+    })
   );
   return (
     <h1 style={{ margin: "auto" }}>
@@ -185,7 +194,10 @@ export default function Album() {
             >
               ...
             </Typography>
-
+            <div
+              style={{ textAlign: "center", paddingTop: 20 }}
+              id="reg_date"
+            />
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item></Grid>
