@@ -291,14 +291,7 @@ export default function Album() {
         <Typography variant="h6" align="center" gutterBottom>
           Mydiary
         </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Fork repository here, help this project!{" "}
-        </Typography>
+
         <Copyright />
       </footer>
     </React.Fragment>

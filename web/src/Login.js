@@ -1,6 +1,6 @@
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
+import Button from "./lib/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
-import setCookie from './functions/setCookie'
+import setCookie from "./functions/setCookie";
 
 function Copyright() {
   return (
@@ -61,7 +61,7 @@ export default function SignIn() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" style={{ color: "#ffffff" }} variant="h5">
           Sign in
         </Typography>
         <form
@@ -122,10 +122,13 @@ export default function SignIn() {
           />
           <Button
             type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+            style={{
+              width: "100%",
+              color: "#ffffff",
+              borderRadius: 5,
+              padding: 10,
+              margin: "10px 0px",
+            }}
           >
             Sign In
           </Button>
