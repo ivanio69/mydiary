@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
+import Button from "./lib/Button";
 import { message } from "antd";
 import TextField from "@material-ui/core/TextField";
 import ReactDOMServer from "react-dom/server";
 import { Result } from "antd";
-import getCookie from './functions/getCookie'
+import getCookie from "./functions/getCookie";
 
 export default function EditPost() {
   let { id } = useParams();
@@ -50,7 +50,7 @@ export default function EditPost() {
   });
 
   return (
-    <div>
+    <div style={{ background: "#2e2e2e", height: "100vh" }}>
       <AppBar position="relative" style={{ zIndex: 1 }}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
@@ -96,13 +96,13 @@ export default function EditPost() {
           <TextField
             style={{ width: "96vw", margin: "1vw 2vw" }}
             id="text"
-            rows={35}
+            rows={20}
             label=""
             multiline
           />
           <Button
             type="submit"
-            style={{ margin: "0 2vw", width: "96vw" }}
+            style={{ margin: "2vw", padding: "10px 15px", float: "right" }}
             variant="contained"
             color="primary"
           >
@@ -110,7 +110,6 @@ export default function EditPost() {
           </Button>
         </form>
         <form
-          style={{}}
           noValidate
           autoComplete="off"
           onSubmit={(e) => {
@@ -137,7 +136,7 @@ export default function EditPost() {
         >
           <Button
             type="submit"
-            style={{ margin: "2vw", float: "right" }}
+            style={{ margin: "2vw", float: "left" }}
             variant="contained"
             color="secondary"
           >

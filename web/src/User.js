@@ -1,7 +1,7 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { Modal, Result } from "antd";
-import Button from "@material-ui/core/Button";
+import Button from "./lib/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -15,11 +15,10 @@ import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import ReactDOMServer from "react-dom/server";
 import getCookie from "./functions/getCookie";
-
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+    <Typography variant="body2" style={{ color: "#ffffff" }} align="center">
+      <b>{"Under Creative Commons 2.0. "}</b>
       <Link color="inherit" href="https://github.com/lifecats/mydiary">
         Mydiary{" "}
       </Link>{" "}
@@ -48,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    background: "#424242",
   },
   name: {
     fontWeight: 300,
@@ -121,10 +121,15 @@ function Cardz() {
                 <a href={"/post/" + card.id} style={{ color: "back" }}>
                   <Card className={classes.card}>
                     <CardContent
-                      style={{ color: "back" }}
+                      style={{ color: "#ffffff" }}
                       className={classes.cardContent}
                     >
-                      <Typography gutterBottom variant="h5" component="h2">
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        style={{ color: "#ffffff" }}
+                        component="h2"
+                      >
                         {card.name}
                       </Typography>
                       <Typography>{card.snippet}</Typography>
@@ -188,8 +193,8 @@ export default function Album() {
               component="h1"
               variant="h2"
               align="center"
-              color="textPrimary"
               gutterBottom
+              style={{ color: "#ffffff" }}
               id="name"
             >
               ...
@@ -216,17 +221,15 @@ export default function Album() {
       </main>
 
       <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
+        <Typography
+          variant="h6"
+          align="center"
+          style={{ color: "#ffffff" }}
+          gutterBottom
+        >
           Mydiary
         </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Fork repository here, help this project!{" "}
-        </Typography>
+
         <Copyright />
       </footer>
     </React.Fragment>

@@ -1,0 +1,12 @@
+.button {
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  background: linear-gradient(to right, #56ccf2, #2f80ed);
+  transition: 0.3s;
+}
+
+.button:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 10px #56ccf2;
+}

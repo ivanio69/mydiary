@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
+import Button from "./lib/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -61,7 +61,7 @@ function SignUp() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" style={{ color: "#ffffff" }}>
           Sign up
         </Typography>
         <form
@@ -148,6 +148,7 @@ function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
+                style={{ color: "#ffffff" }}
                 control={
                   <Checkbox
                     onChange={(e) => {
@@ -163,10 +164,13 @@ function SignUp() {
           </Grid>
           <Button
             type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+            style={{
+              width: "100%",
+              color: "#ffffff",
+              borderRadius: 5,
+              padding: 10,
+              margin: "10px 0px",
+            }}
           >
             Sign Up
           </Button>
@@ -186,7 +190,7 @@ function SignUp() {
         <Dialog open={true} aria-labelledby="simple-dialog-title">
           <DialogTitle id="simple-dialog-title">
             {" "}
-            Plesae update uour browser!
+            Plesae update your browser!
           </DialogTitle>
           <div style={{ padding: "10px 25px 25px 25px" }}>
             Fetch api is not supported!

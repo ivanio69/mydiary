@@ -11,22 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-/*linear-gradient(45deg, #e100ff, #7f00ff);
-  */
-@keyframes bg {
-  0% {
-    background: #e100ff;
-  }
-  50% {
-    background: #7f00ff;
-  }
-  100% {
-    background: #e100ff;
-  }
-}
 
 .gradient {
-  animation: bg 5s infinite ease;
+  background-color: #2e2e2e;
   height: 100vh;
   color: #ffffff;
+}
+
+.header {
+  background-image: linear-gradient(to right, #56ccf2, #2f80ed);
+  background-clip: text;
+  background-size: 100%;
+  -moz-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
 }

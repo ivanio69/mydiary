@@ -75,7 +75,7 @@ export default function Post() {
         onCancel={() => setShare(false)}
         visible={share}
       >
-        Share this link to your account:
+        Share this link to this post:
         <br />
         {window.location.href}{" "}
       </Modal>
@@ -95,7 +95,7 @@ export default function Post() {
               Share
             </Button>
           </span>
-          <Typography variant="h4" id="name" />
+          <Typography variant="h4" id="name" style={{ color: "#ffffffff" }} />
 
           <span style={{ opacity: "60%" }} id="username" />
           <Typography
