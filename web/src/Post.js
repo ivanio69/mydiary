@@ -74,6 +74,7 @@ export default function Post() {
         title="Share account"
         onCancel={() => setShare(false)}
         visible={share}
+        className="modla"
       >
         Share this link to this post:
         <br />

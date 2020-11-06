@@ -25,3 +25,19 @@ code {
   -moz-text-fill-color: transparent;
   -webkit-text-fill-color: transparent;
 }
+
+.modla * {
+  color: #ffffff !important;
+}
+.modla .ant-modal-body {
+  background-color: #2e2e2e;
+  color: #ffffff !important;
+}
+
+.modla .ant-modal-header {
+  background-color: #2e2e2e;
+}
+
+.modla .ant-modal-header * {
+  background-color: #2e2e2e;
+}

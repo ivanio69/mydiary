@@ -252,7 +252,9 @@ db.once("open", function () {
         if (err) {
           res.json({ message: err.message, err });
         } else {
-          res.send(u.notes);
+          if (u == null)
+            res.json({ message: "Your account has been removed!", status: 69 });
+          else res.send(u.notes);
         }
       });
     } catch (err) {
