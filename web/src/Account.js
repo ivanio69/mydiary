@@ -2,7 +2,7 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import AppBar from "@material-ui/core/AppBar";
 import { Modal, message } from "antd";
-import Button from "@material-ui/core/Button";
+import Button from "./lib/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -22,8 +22,8 @@ import setCookie from "./functions/setCookie";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+    <Typography variant="body2" style={{ color: "#ffffff" }} align="center">
+      <b>{"Under Creative Commons 2.0. "}</b>
       <Link color="inherit" href="https://github.com/lifecats/mydiary">
         Mydiary{" "}
       </Link>{" "}
@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    background: "#424242",
   },
   name: {
     fontWeight: 300,
@@ -108,13 +109,18 @@ function Cardz() {
             "notes"
           ).innerHTML += ReactDOMServer.renderToString(
             <Grid item key={card} xs={12} sm={6} md={4}>
-              <a href={"/post/" + card.id} style={{ color: "back" }}>
+              <a href={"/post/" + card.id} style={{ color: "#ffffff" }}>
                 <Card className={classes.card}>
                   <CardContent
-                    style={{ color: "back" }}
+                    style={{ color: "#ffffffff" }}
                     className={classes.cardContent}
                   >
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      style={{ color: "#ffffffff" }}
+                      component="h2"
+                    >
                       {card.name}
                     </Typography>
                     <Typography>{card.snippet}</Typography>
@@ -134,7 +140,7 @@ function Cardz() {
     })
   );
   return (
-    <h1 style={{ margin: "auto" }}>
+    <h1 style={{ margin: "auto", color: "#ffffff" }}>
       Oh, looks like here's too empty. Very empty...
     </h1>
   );
@@ -204,6 +210,7 @@ export default function Album() {
         </form>
       </Modal>
       <Modal
+        style={{ background: "#2e2e2e" }}
         footer={null}
         title="Share account"
         onCancel={() => setShare(false)}
@@ -229,6 +236,7 @@ export default function Album() {
               setCookie("email", null, -10);
               window.location.href = "/";
             }}
+            style={{ background: "transparent" }}
             color="inherit"
           >
             <ExitToAppIcon />
@@ -242,7 +250,7 @@ export default function Album() {
               component="h1"
               variant="h2"
               align="center"
-              color="textPrimary"
+              style={{ color: "#ffffff" }}
               gutterBottom
             >
               {getCookie("name")}{" "}
@@ -250,7 +258,7 @@ export default function Album() {
             <Typography
               variant="h5"
               align="center"
-              color="textSecondary"
+              style={{ color: "#ffffff" }}
               paragraph
             >
               Welcome back!{" "}
@@ -288,7 +296,12 @@ export default function Album() {
         <AddIcon />
       </Fab>
       <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
+        <Typography
+          variant="h6"
+          style={{ color: "#ffffff" }}
+          align="center"
+          gutterBottom
+        >
           Mydiary
         </Typography>
 
