@@ -3,7 +3,7 @@ import Button from "./lib/Button";
 
 function Home() {
   return (
-    <>
+    <div className="home">
       <div className="gradient">
         <div
           style={{
@@ -36,7 +36,6 @@ function Home() {
           <h2 style={{ color: "#ffffff" }}>
             Sign up for your personal notes storage
           </h2>
-
           <Button
             onClick={() => (window.location.href = "/register")}
             style={{ margin: 10, padding: "10px 15px", fontSize: 20 }}
@@ -49,9 +48,36 @@ function Home() {
           >
             Login
           </Button> */}
+          <span>
+            Or <a href="/login">log in your existing account</a>
+          </span>
+          <p>Also read mode about mydiary by scrolling down</p>{" "}
         </div>
       </div>
-    </>
+      <div style={{ textAlign: "center", marginTop: 35 }}>
+        <div className="secure ca">
+          <h3>Secure</h3>
+          <p>
+            We keep your data in secret by enctypting it. No one can access your
+            data without your password and email compination
+          </p>
+        </div>
+        <div className="free ca">
+          <h3>Free</h3>
+          <p>
+            Mydiary will be free and open source while i own it. We will not
+            ever sell your data to anyone.
+          </p>
+        </div>
+        <div className="useful ca">
+          <h3>useful</h3>
+          <p>
+            You can make lists, notes for schools and friends, documentation for
+            your projects and write down your hometask.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -12,10 +12,13 @@ code {
     monospace;
 }
 
-.gradient {
-  background-color: #2e2e2e;
-  height: 100vh;
+.home {
   color: #ffffff;
+  background-color: #2e2e2e;
+}
+
+.gradient {
+  height: 100vh;
 }
 
 .header {
@@ -44,4 +47,25 @@ code {
 
 #text * {
   color: #ffffff !important;
+}
+
+h3 {
+  font-size: 35px;
+  text-transform: capitalize;
+  color: #ffffff !important;
+}
+
+.ca {
+  width: 300px;
+  background: linear-gradient(to right, #56ccf2, #2f80ed);
+  padding: 20px;
+  margin: 20px;
+  display: inline-block;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.ca:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 5px 15px 10px #56ccf2;
 }
