@@ -169,6 +169,7 @@ export default function Album() {
         title="Share account"
         onCancel={() => setShare(false)}
         visible={share}
+        className="modla"
       >
         Share this link to this account:
         <br />

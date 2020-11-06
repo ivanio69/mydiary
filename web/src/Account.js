@@ -98,45 +98,55 @@ function Cardz() {
     }),
   }).then((response) =>
     response.json().then((data) => {
-      if (data.length > 0) {
-        document.getElementById("notes").innerHTML = null;
-      }
-      let display_notes = data.reverse();
+      if (data.status === 69) {
+        message.error(data.message, 0);
+        setCookie("name", null, -10);
+        setCookie("id", null, -10);
+        setCookie("email", null, -10);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+      } else {
+        if (data.length > 0) {
+          document.getElementById("notes").innerHTML = null;
+        }
+        let display_notes = data.reverse();
 
-      display_notes.map(
-        (card) =>
-          (document.getElementById(
-            "notes"
-          ).innerHTML += ReactDOMServer.renderToString(
-            <Grid item key={card} xs={12} sm={6} md={4}>
-              <a href={"/post/" + card.id} style={{ color: "#ffffff" }}>
-                <Card className={classes.card}>
-                  <CardContent
-                    style={{ color: "#ffffffff" }}
-                    className={classes.cardContent}
-                  >
-                    <Typography
-                      gutterBottom
-                      variant="h5"
+        display_notes.map(
+          (card) =>
+            (document.getElementById(
+              "notes"
+            ).innerHTML += ReactDOMServer.renderToString(
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <a href={"/post/" + card.id} style={{ color: "#ffffff" }}>
+                  <Card className={classes.card}>
+                    <CardContent
                       style={{ color: "#ffffffff" }}
-                      component="h2"
+                      className={classes.cardContent}
                     >
-                      {card.name}
-                    </Typography>
-                    <Typography>{card.snippet}</Typography>
-                  </CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        style={{ color: "#ffffffff" }}
+                        component="h2"
+                      >
+                        {card.name}
+                      </Typography>
+                      <Typography>{card.snippet}</Typography>
+                    </CardContent>
 
-                  <CardActions>
-                    {" "}
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                  </CardActions>
-                </Card>
-              </a>
-            </Grid>
-          ))
-      );
+                    <CardActions>
+                      {" "}
+                      <Button size="small" color="primary">
+                        View
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </a>
+              </Grid>
+            ))
+        );
+      }
     })
   );
   return (
@@ -159,6 +169,9 @@ export default function Album() {
         title="New note"
         onCancel={() => setNewpost(false)}
         visible={newpost}
+        className="modla"
+        width={1000}
+        maskStyle={{ backgroundColor: "#2e2e2e" }}
       >
         <form
           className={classes.root}
@@ -215,6 +228,7 @@ export default function Album() {
         title="Share account"
         onCancel={() => setShare(false)}
         visible={share}
+        className="modla"
       >
         Share this link to your account:
         <br />
@@ -274,10 +288,12 @@ export default function Album() {
                     New note
                   </Button>
                 </Grid>
-                <Button color="primary" onClick={() => setShare(true)}>
-                  Share
-                </Button>
               </Grid>
+            </div>
+            <div style={{ textAlign: "center", marginTop: 15 }}>
+              <a href="#share" onClick={() => setShare(true)}>
+                Share
+              </a>
             </div>
           </Container>
         </div>
