@@ -183,7 +183,11 @@ export default function Album() {
             color="inherit"
             noWrap
           >
-            Mydiary - <span className={classes.name}>{getCookie("name")} </span>
+            {" "}
+            <a href="/" style={{ color: "#000000" }}>
+              Mydiary -{" "}
+              <span className={classes.name}>{getCookie("name")} </span>
+            </a>
           </Typography>
         </Toolbar>
       </AppBar>

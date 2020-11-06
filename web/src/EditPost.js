@@ -54,7 +54,9 @@ export default function EditPost() {
       <AppBar position="relative" style={{ zIndex: 1 }}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Mydiary
+            <a href="/" style={{ color: "black" }}>
+              Mydiary
+            </a>
           </Typography>
         </Toolbar>
       </AppBar>{" "}

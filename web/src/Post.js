@@ -83,7 +83,9 @@ export default function Post() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
-            Mydiary
+            <a href="/" style={{ color: "#000000" }}>
+              Mydiary
+            </a>
           </Typography>
         </Toolbar>
       </AppBar>
@@ -96,13 +98,13 @@ export default function Post() {
               Share
             </Button>
           </span>
-          <Typography variant="h4" id="name" style={{ color: "#ffffffff" }} />
+          <Typography variant="h4" id="name" style={{ color: "#ffffff" }} />
 
           <span style={{ opacity: "60%" }} id="username" />
           <Typography
             variant="body1"
             id="text"
-            style={{ paddingTop: "20px" }}
+            style={{ paddingTop: "20px", color: "#ffffff" }}
           />
           <div id="text" />
         </div>

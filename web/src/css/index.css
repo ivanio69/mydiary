@@ -41,3 +41,7 @@ code {
 .modla .ant-modal-header * {
   background-color: #2e2e2e;
 }
+
+#text * {
+  color: #ffffff !important;
+}
