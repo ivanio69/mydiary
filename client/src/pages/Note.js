@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Markdown from "react-markdown";
+import Markdown from "markdown-to-jsx";
 import {
   Input,
   Button,
@@ -57,12 +57,23 @@ export default function Note() {
         spinner
       >
         <div style={{ padding: 20 }}>
-          <h1>{note.note ? note.note.name : "Loading..."}</h1>
-          <Markdown source={note.note ? note.note.body : "Loading..."} />
+          <h1 style={{ color: theme.colors.primary }}>
+            {note.note ? note.note.name : "Loading..."}
+          </h1>
+          <p>
+            By{" "}
+            <a
+              style={{ color: theme.colors.primary }}
+              href={"/user/" + (note.user ? note.user.username : null)}
+            >
+              {note.user ? note.user.name : null}
+            </a>
+          </p>
+          <Markdown>{note.note ? note.note.body : "Loading..."}</Markdown>
         </div>
         <div style={{ position: "fixed", right: 20, bottom: 20 }}>
           {note.user ? (
-            user.email === note.user.email ? (
+            user.username === note.user.username ? (
               <Button
                 onClick={() => {
                   setEditModalOpen(true);
@@ -208,7 +219,7 @@ export default function Note() {
             wide
             outline
           >
-            Exit{" "}
+            Exit
           </Button>
         </ReactModal>
       </LoadingOverlay>

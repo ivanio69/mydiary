@@ -3,7 +3,7 @@ import { alerts, Button, Input, validate } from "../components";
 import axios from "axios";
 
 export default function Home() {
-  const [email, setEmail] = React.useState(null);
+  const [username, setUsername] = React.useState(null);
   const [name, setName] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -22,12 +22,12 @@ export default function Home() {
         onSubmit={(e) => {
           e.preventDefault();
           setLoading(true);
-          validate(email, "email")
-            .then((email) => {
-              validate(password, "password").then((pass) => {
+          validate(username, "username")
+            .then(() => {
+              validate(password, "password").then(() => {
                 axios
                   .post("https://api.mydiary.tech/api/v1/register", {
-                    email,
+                    username,
                     name,
                     password: password,
                   })
@@ -48,7 +48,6 @@ export default function Home() {
             })
             .catch((err) => {
               setLoading(false);
-
               alerts.error(err.error);
             });
         }}
@@ -65,9 +64,9 @@ export default function Home() {
         />
         <br />
         <Input
-          placeholder="Your email"
+          placeholder="Your username"
           onChange={(e) => {
-            setEmail(e.target.value);
+            setUsername(e.target.value);
           }}
         />
         <br />

@@ -236,6 +236,13 @@ export const validate = (value, type) => {
           else reject({ error: "This does not look like legit email!" });
         else reject({ error: "Hey! Provide email please!" });
         break;
+      case "username":
+        if (value)
+          if (value.match(/\/|%|\^|\*|!/g))
+            reject({ error: "This does not look like legit username!" });
+          else resolve(value);
+        else reject({ error: "Hey! Provide username please!" });
+        break;
       default:
         return false;
     }

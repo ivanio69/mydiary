@@ -2,7 +2,7 @@ import React from "react";
 import { alerts, Button, Input, validate } from "../components";
 import axios from "axios";
 export default function Home() {
-  const [email, setEmail] = React.useState(null);
+  const [username, setUsername] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -20,27 +20,33 @@ export default function Home() {
         onSubmit={(e) => {
           e.preventDefault();
           setLoading(true);
-          validate(email, "email")
-            .then((email) => {
-              validate(password, "password").then((password) => {
-                axios
-                  .post("https://api.mydiary.tech/api/v1/login", {
-                    email,
-                    password: password,
-                  })
-                  .then((r) => {
-                    setLoading(false);
-                    if (r.data.status === 0) {
-                      alerts.error(r.data.message);
-                    } else if (r.data.status === 1) {
-                      localStorage.setItem("token", r.data.token);
-                      window.location.href = "/account";
-                    }
-                  })
-                  .catch(() => {
-                    setLoading(false);
-                  });
-              });
+          validate(username, "username")
+            .then(() => {
+              validate(password, "password")
+                .then(() => {
+                  axios
+                    .post("https://api.mydiary.tech/api/v1/login", {
+                      username,
+                      password,
+                    })
+                    .then((r) => {
+                      setLoading(false);
+                      if (r.data.status === 0) {
+                        alerts.error(r.data.message);
+                      } else if (r.data.status === 1) {
+                        localStorage.setItem("token", r.data.token);
+                        window.location.href = "/account";
+                      }
+                    })
+                    .catch((err) => {
+                      setLoading(false);
+                      alerts.error(err);
+                    });
+                })
+                .catch((err) => {
+                  setLoading(false);
+                  alerts.error(err.error);
+                });
             })
             .catch((err) => {
               setLoading(false);
@@ -53,9 +59,9 @@ export default function Home() {
         </h2>
         <p style={{ margin: "15px 0" }}>Welcome back! Nice to see you again!</p>
         <Input
-          placeholder="Your email"
+          placeholder="Your username"
           onChange={(e) => {
-            setEmail(e.target.value);
+            setUsername(e.target.value);
           }}
         />
         <br />
